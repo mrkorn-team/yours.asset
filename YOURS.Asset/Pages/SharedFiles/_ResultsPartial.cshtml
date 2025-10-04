@@ -18,14 +18,20 @@
             <td data-name="@entry.Name">
               @if (entry.IsDir)
               {
-                <a href="/shared?path=@entry.RelativePath" data-bs-toggle="tooltip" title="@entry.RelativePath" class="d-inline-flex align-items-center gap-1">
+                <a href="/shared?path=@entry.RelativePath"
+                   data-bs-toggle="tooltip"
+                   title="@entry.RelativePath"
+                   class="d-inline-flex align-items-center gap-1">
                   <i class="bi bi-folder-fill text-warning"></i>
                   <span>@entry.Name</span>
                 </a>
               }
               else
               {
-                <a href="/shared?path=@entry.RelativePath" data-bs-toggle="tooltip" title="@entry.RelativePath" class="d-inline-flex align-items-center gap-1">
+                <a href="/shared?path=@entry.RelativePath"
+                   data-bs-toggle="tooltip"
+                   title="@entry.RelativePath"
+                   class="d-inline-flex align-items-center gap-1">
                   <i class="bi bi-file-earmark text-secondary"></i>
                   <span>@entry.Name</span>
                 </a>

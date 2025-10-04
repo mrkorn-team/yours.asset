@@ -13,8 +13,8 @@
     <div class="card-body">
 
       <!-- Breadcrumb -->
-      <nav aria-label="breadcrumb" class="mb-1">
-        <ol class="breadcrumb sharedfiles-breadcrumb">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb sharedfiles-breadcrumb mb-1">
           @for (int i = 0; i < Model.Breadcrumb.Count; i++)
           {
             var crumb = Model.Breadcrumb[i];
@@ -24,9 +24,10 @@
               if (Model.Breadcrumb.Count > 1)
               {
                 <li class="breadcrumb-item">
-                  <a href="@Url.Page("./Index", new { path = crumb.RelativePath })"
-                     data-bs-toggle="tooltip" data-bs-title="@crumb.Tooltip">
-                    <i class="bi bi-folder-fill text-warning me-1"></i><span>@crumb.Name</span>
+                  <a href="/shared?path=@crumb.RelativePath"
+                     data-bs-toggle="tooltip" data-bs-title="@crumb.Tooltip"
+                     class="d-inline-flex align-items-center gap-1">
+                    <i class="bi bi-folder-fill text-warning"></i><span>@crumb.Name</span>
                   </a>
                 </li>
               }
@@ -41,8 +42,9 @@
             else if (i < Model.Breadcrumb.Count - 1)
             {
               <li class="breadcrumb-item">
-                <a href="@Url.Page("./Index", new { path = crumb.RelativePath })"
-                   data-bs-toggle="tooltip" data-bs-title="@crumb.Tooltip">
+                <a href="/shared?path=@crumb.RelativePath"
+                   data-bs-toggle="tooltip" data-bs-title="@crumb.Tooltip"
+                   class="d-inline-flex align-items-center">
                   <span>@crumb.Name</span>
                 </a>
               </li>
