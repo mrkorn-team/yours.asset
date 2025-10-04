@@ -222,7 +222,6 @@
 
   @Html.AntiForgeryToken()
 
-  <script src="@dev/menubar/dist/menubar.js" asp-append-version="true"></script>
   <script src="@dev/gptmenu/dist/gptmenu.js" asp-append-version="true"></script>
   <script src="~/js/site.js" asp-append-version="true"></script>
   @await RenderSectionAsync("Scripts", required: false)
