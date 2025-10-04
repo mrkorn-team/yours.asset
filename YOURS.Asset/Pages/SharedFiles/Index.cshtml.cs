@@ -61,7 +61,7 @@ namespace YOURS.Asset.Pages.SharedFiles
           var rawText = System.IO.File.ReadAllText(currentFullPath);
           var lines = rawText.Split('\n');
           if (lines.Length > 0)
-            lines[0] = lines[0].TrimStart(); // strip leading whitespace on first line
+            lines[0] = lines[0].TrimStart();
           FileContent = string.Join("\n", lines);
         }
         else
@@ -109,7 +109,6 @@ namespace YOURS.Asset.Pages.SharedFiles
           }
         }
 
-        // folders first, then names
         Entries = Entries
             .OrderBy(e => e.IsDir ? 0 : 1)
             .ThenBy(e => e.DisplayPath)
@@ -121,7 +120,6 @@ namespace YOURS.Asset.Pages.SharedFiles
         if (Request.Headers["X-Requested-With"] == "fetch")
           return Partial("_ResultsPartial", this);
 
-        // Full page otherwise
         return Page();
       }
 
@@ -132,7 +130,6 @@ namespace YOURS.Asset.Pages.SharedFiles
     {
       Breadcrumb.Clear();
 
-      // Root breadcrumb
       Breadcrumb.Add((
         Name: "Root",
         RelativePath: string.Empty,

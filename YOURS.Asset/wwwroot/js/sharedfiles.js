@@ -4,7 +4,7 @@ class SharedFiles {
     this.init();
     this.enableSorting();     // initial table load
     this.refreshTooltips();   // init tooltips safely (scoped)
-    this.initPrismTheme();    // ✅ handle prism theme switching
+    this.initPrismTheme();    // handle prism theme switching
   }
 
   init() {
@@ -18,8 +18,7 @@ class SharedFiles {
     const currentUrl = window.location.href;
     document.querySelectorAll(".list-group-item a").forEach(link => {
       const href = link.getAttribute("href");
-      if (!href) return;
-      if (currentUrl.includes(href)) {
+      if (href && currentUrl.includes(href)) {
         link.classList.add("active");
       }
     });
@@ -28,7 +27,6 @@ class SharedFiles {
   attachSearchClear() {
     const searchInput = document.querySelector("input[name='search']");
     const clearBtn = document.querySelector("#searchClearBtn");
-
     if (!(searchInput && clearBtn)) return;
 
     const toggleClear = () => {
@@ -86,7 +84,7 @@ class SharedFiles {
     const currentPath = document.querySelector("input[name='path']")?.value || "";
     const url = `/shared?path=${encodeURIComponent(currentPath)}&search=${encodeURIComponent(query)}`;
 
-    // update browser URL so refresh keeps search
+    // Update browser URL so refresh keeps search
     const newUrl = `${window.location.pathname}?path=${encodeURIComponent(currentPath)}&search=${encodeURIComponent(query)}`;
     window.history.replaceState({}, "", newUrl);
 
@@ -108,7 +106,7 @@ class SharedFiles {
       const table = doc.querySelector("#resultsTable");
       const alertBox = doc.querySelector(".alert");
 
-      this.disposeTooltips(resultsContainer); // ✅ cleanup old tooltips
+      this.disposeTooltips(resultsContainer); // cleanup old tooltips
 
       if (table) {
         resultsContainer.innerHTML = table.outerHTML;
@@ -142,14 +140,9 @@ class SharedFiles {
 
     const updateStatus = (key, asc) => {
       if (!status) return;
-      let colName = "";
-      switch (key) {
-        case "name": colName = "Name"; break;
-        case "size": colName = "Size"; break;
-        case "date": colName = "Date"; break;
-      }
+      const colNames = { name: "Name", size: "Size", date: "Date" };
       const dirSymbol = asc ? "↑" : "↓";
-      status.textContent = `Sorted by: ${colName} ${dirSymbol}`;
+      status.textContent = `Sorted by: ${colNames[key]} ${dirSymbol}`;
     };
 
     headers.forEach(header => {
@@ -159,38 +152,20 @@ class SharedFiles {
         const rows = Array.from(tbody.querySelectorAll("tr"));
 
         let ascending;
-        if (sortKey === "size" && !header.classList.contains("asc") && !header.classList.contains("desc")) {
-          ascending = false;
-        }
-        else if (sortKey === "date" && !header.classList.contains("asc") && !header.classList.contains("desc")) {
-          ascending = false;
-        }
-        else {
+        if ((sortKey === "size" || sortKey === "date") && !header.classList.contains("asc") && !header.classList.contains("desc")) {
+          ascending = false; // first click → descending
+        } else {
           ascending = !header.classList.contains("asc");
         }
 
         rows.sort((a, b) => {
           const aIsDir = a.dataset.isdir === "True";
           const bIsDir = b.dataset.isdir === "True";
-
           if (aIsDir && !bIsDir) return -1;
           if (!aIsDir && bIsDir) return 1;
 
-          let aVal, bVal;
-          switch (sortKey) {
-            case "name":
-              aVal = a.querySelector("td[data-name]").dataset.name.toLowerCase();
-              bVal = b.querySelector("td[data-name]").dataset.name.toLowerCase();
-              break;
-            case "size":
-              aVal = parseInt(a.querySelector("td[data-size]").dataset.size, 10);
-              bVal = parseInt(b.querySelector("td[data-size]").dataset.size, 10);
-              break;
-            case "date":
-              aVal = parseInt(a.querySelector("td[data-date]").dataset.date, 10);
-              bVal = parseInt(b.querySelector("td[data-date]").dataset.date, 10);
-              break;
-          }
+          const aVal = this._getSortValue(a, sortKey);
+          const bVal = this._getSortValue(b, sortKey);
 
           if (aVal < bVal) return ascending ? -1 : 1;
           if (aVal > bVal) return ascending ? 1 : -1;
@@ -211,9 +186,7 @@ class SharedFiles {
             : `<i class="bi bi-arrow-down"></i>`;
         }
 
-        tbody.innerHTML = "";
-        rows.forEach(row => tbody.appendChild(row));
-
+        tbody.replaceChildren(...rows);
         updateStatus(sortKey, ascending);
       });
     });
@@ -227,11 +200,22 @@ class SharedFiles {
     }
   }
 
+  _getSortValue(row, key) {
+    switch (key) {
+      case "name":
+        return row.querySelector("td[data-name]").dataset.name.toLowerCase();
+      case "size":
+        return parseInt(row.querySelector("td[data-size]").dataset.size, 10);
+      case "date":
+        return parseInt(row.querySelector("td[data-date]").dataset.date, 10);
+      default:
+        return "";
+    }
+  }
+
   refreshTooltips(container = document) {
     container.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-      if (!bootstrap.Tooltip.getInstance(el)) {
-        new bootstrap.Tooltip(el);
-      }
+      if (!bootstrap.Tooltip.getInstance(el)) new bootstrap.Tooltip(el);
     });
   }
 
@@ -257,21 +241,21 @@ class SharedFiles {
       const prismTheme = document.getElementById("prismTheme");
       if (!prismTheme) return;
 
-      prismTheme.href = isDark
-        ? "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
-        : "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css";
+      const light = prismTheme.dataset.light;
+      const dark = prismTheme.dataset.dark;
+
+      prismTheme.href = isDark ? dark : light;
     };
 
     // Initial load
     const isDark = document.documentElement.getAttribute("data-bs-theme") === "dark";
     setPrismTheme(isDark);
 
-    // Watch for changes in theme
+    // Watch for Bootstrap theme toggle
     const observer = new MutationObserver(() => {
       const darkNow = document.documentElement.getAttribute("data-bs-theme") === "dark";
       setPrismTheme(darkNow);
     });
-
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-bs-theme"] });
   }
 }

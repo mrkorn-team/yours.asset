@@ -123,8 +123,11 @@
 
 @section Styles {
   <!-- ✅ Prism theme auto-switch -->
-  <link id="prismTheme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" />
-
+  <link id="prismTheme"
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+        data-light="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css"
+        data-dark="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="stylesheet" href="~/css/sharedFiles.css" asp-append-version="true" />
 }
 
@@ -137,6 +140,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
   <script src="~/js/sharedFiles.js" asp-append-version="true"></script>
 }
+
 
 @functions {
   private string GetPrismLanguage(string? ext)
