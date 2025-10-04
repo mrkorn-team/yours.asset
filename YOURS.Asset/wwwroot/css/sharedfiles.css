@@ -167,3 +167,60 @@ pre[class*="language-"] {
 pre[class*="language-"]:hover {
   scrollbar-color: rgba(128,128,128,0.7) transparent;
 }
+
+/* ===== Drop Zone Overlay (clean & elegant) ===== */
+#uploadDropZone {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 1055;
+
+  /* 🩶 Frosted-glass background */
+  background-color: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+
+  /* Centering */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  /* Text and icon */
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 500;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.5); /* ✅ sharpen contrast */
+
+  /* Animation */
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+/* Active state = visible */
+#uploadDropZone.active {
+  display: flex;
+  opacity: 1;
+}
+
+/* Hide fully when not active */
+#uploadDropZone.hidden {
+  display: none;
+  opacity: 0;
+}
+
+/* Icon styling — crisp, glowing, not blurry */
+#uploadDropZone i {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: #fff;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.65)); /* ✅ makes it pop */
+}
+
+/* Optional: pulsing animation for icon while hovering */
+@keyframes pulseGlow {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(255,255,255,0.6)); }
+  50% { filter: drop-shadow(0 0 16px rgba(255,255,255,0.9)); }
+}
+#uploadDropZone.active i {
+  animation: pulseGlow 1.5s infinite;
+}

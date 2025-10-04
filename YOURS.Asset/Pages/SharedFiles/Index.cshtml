@@ -85,6 +85,22 @@
           <p><a href="@Url.Page("./Index", new { path = Model.ParentPath })">🔼 Up one level</a></p>
         }
 
+        <!-- Upload controls -->
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <input id="fileInput" type="file" multiple hidden />
+          <button id="browseBtn" type="button" class="btn btn-outline-primary">
+            <i class="bi bi-upload"></i> Browse Files...
+          </button>
+          <small class="text-muted">or drag & drop files below (max 30 MB each)</small>
+        </div>
+
+        <!-- Drop Zone -->
+        <div id="uploadDropZone">
+          <i class="bi bi-cloud-arrow-up"></i>
+          <div>Drop your files here to upload</div>
+          <small class="opacity-75">(Max 30 MB per file)</small>
+        </div>
+
         <div id="resultsContainer">
           @await Html.PartialAsync("_ResultsPartial", Model)
         </div>
@@ -117,6 +133,18 @@
     </div>
     <div class="card-footer text-muted small">
       Shared Browser powered by Razor Pages + Bootstrap
+    </div>
+  </div>
+
+  <!-- Bootstrap Toast -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="uploadToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          ✅ File uploaded successfully.
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
     </div>
   </div>
 </div>

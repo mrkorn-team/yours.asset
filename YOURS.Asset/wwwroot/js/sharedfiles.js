@@ -5,6 +5,8 @@ class SharedFiles {
     this.enableSorting();     // initial table load
     this.refreshTooltips();   // init tooltips safely (scoped)
     this.initPrismTheme();    // handle prism theme switching
+    this.enableDragDropUpload();
+    this.enableBrowseUpload();
   }
 
   init() {
@@ -198,6 +200,157 @@ class SharedFiles {
       if (icon) icon.innerHTML = `<i class="bi bi-arrow-up"></i>`;
       updateStatus("name", true);
     }
+  }
+
+  enableBrowseUpload() {
+    const browseBtn = document.querySelector("#browseBtn");
+    const fileInput = document.querySelector("#fileInput");
+    if (!(browseBtn && fileInput)) return;
+
+    browseBtn.addEventListener("click", () => fileInput.click());
+
+    fileInput.addEventListener("change", async (e) => {
+      const files = e.target.files;
+      if (!files.length) return;
+      await this.uploadFiles(files);
+      fileInput.value = ""; // reset after upload
+    });
+  }
+
+  enableDragDropUpload() {
+    const dropZone = document.querySelector("#uploadDropZone");
+    if (!dropZone) return;
+
+    const currentPathInput = () => document.querySelector("input[name='path']")?.value || "";
+    let dragDepth = 0;
+    let draggingFiles = false;
+
+    const showZone = () => {
+      dropZone.classList.add("active");
+    };
+
+    const hideZone = () => {
+      dropZone.classList.remove("active");
+    };
+
+    const hasFiles = (e) => {
+      if (!e.dataTransfer) return false;
+
+      // ✅ Universal check: look for File objects or "Files" MIME type
+      return (
+        (e.dataTransfer.types && Array.from(e.dataTransfer.types).includes("Files")) ||
+        (e.dataTransfer.items && Array.from(e.dataTransfer.items).some(i => i.kind === "file"))
+      );
+    };
+
+    // --- WINDOW LEVEL ---
+    window.addEventListener("dragenter", (e) => {
+      if (!hasFiles(e)) return;
+      draggingFiles = true;
+      dragDepth++;
+      showZone();
+      e.preventDefault();
+    });
+
+    window.addEventListener("dragover", (e) => {
+      if (!hasFiles(e)) return;
+      e.preventDefault();
+      dropZone.classList.add("dragover");
+    });
+
+    window.addEventListener("dragleave", (e) => {
+      if (!draggingFiles) return;
+
+      const outOfWindow =
+        e.clientX <= 0 || e.clientY <= 0 ||
+        e.clientX >= window.innerWidth || e.clientY >= window.innerHeight;
+
+      if (outOfWindow) {
+        hideZone();
+        return;
+      }
+
+      dragDepth = Math.max(0, dragDepth - 1);
+      if (dragDepth === 0) hideZone();
+    });
+
+    // Hide overlay if cursor leaves the window
+    window.addEventListener("mouseout", (e) => {
+      if (!draggingFiles) return;
+      if (!e.relatedTarget && !e.toElement) hideZone();
+    });
+
+    // Drop
+    window.addEventListener("drop", (e) => hideZone());
+
+    // --- DROP ZONE ---
+    dropZone.addEventListener("dragover", (e) => {
+      if (!hasFiles(e)) return;
+      e.preventDefault();
+      dropZone.classList.add("dragover");
+    });
+
+    dropZone.addEventListener("dragleave", (e) => {
+      if (e.target === dropZone) dropZone.classList.remove("dragover");
+    });
+
+    dropZone.addEventListener("drop", async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const files = e.dataTransfer?.files;
+      hideZone();
+      if (!files?.length) return;
+
+      await this.uploadFiles(files);
+    });
+  }
+
+  async uploadFiles(files) {
+    if (!files?.length) return;
+
+    const currentPath = document.querySelector("input[name='path']")?.value || "";
+    const existingNames = Array.from(
+      document.querySelectorAll("#resultsTable tbody td[data-name]")
+    ).map(td => td.dataset.name.toLowerCase());
+
+    for (const f of files) {
+      if (existingNames.includes(f.name.toLowerCase())) {
+        this.showToast(`File '${f.name}' already exists in this folder.`, "warning");
+        return; // ⛔ stop upload
+      }
+      if (f.size > 30 * 1024 * 1024) {
+        this.showToast(`File '${f.name}' exceeds 30 MB limit.`, "danger");
+        return; // ⛔ stop upload
+      }
+    }
+
+    // continue with fetch POST
+    const formData = new FormData();
+    for (const f of files) formData.append("files", f);
+    formData.append("path", currentPath);
+
+    try {
+      const res = await fetch("/shared?handler=Upload", { method: "POST", body: formData });
+      if (!res.ok) throw new Error(await res.text());
+      this.showToast("Upload completed.", "success");
+      this.updateSearchResults(""); // refresh view
+    } catch (err) {
+      console.error(err);
+      this.showToast("Upload failed: " + (err.message || "Unknown error"), "danger");
+    }
+  }
+
+  showToast(message, isError = false) {
+    const toastEl = document.getElementById("uploadToast");
+    if (!toastEl) return;
+
+    toastEl.classList.toggle("text-bg-success", !isError);
+    toastEl.classList.toggle("text-bg-danger", isError);
+    toastEl.querySelector(".toast-body").textContent = message;
+
+    const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
+    toast.show();
   }
 
   _getSortValue(row, key) {
