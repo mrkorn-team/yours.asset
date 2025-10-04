@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <CompressionEnabled>false</CompressionEnabled>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <NoWarn>1701;1702;CA1416;CS8981;IDE1006</NoWarn>
+    <Copyright>mrkorninfo@gmail.com</Copyright>
+    <Company>ยัวร์วิชั่นฯ</Company>
+    <Product>YOURData</Product>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <InformationalVersion>250919T1232</InformationalVersion>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="9.0.9" />
+    <!--<PackageReference Include="Toolbelt.AspNetCore.CssLiveReloader" Version="1.1.4" />-->
+  </ItemGroup>
+
+  <Target Name="PostPublishClean" AfterTargets="Publish">
+    <ItemGroup>
+      <FilesToDelete Include="$(PublishDir)\azure*.dll" />
+      <FilesToDelete Include="$(PublishDir)\dotnet-aspnet-codegenerator*.dll" />
+      <FilesToDelete Include="$(PublishDir)\Microsoft.Build*.dll" />
+      <FilesToDelete Include="$(PublishDir)\Microsoft.CodeAnalysis*.dll" />
+      <FilesToDelete Include="$(PublishDir)\Microsoft.VisualStudio.Web.CodeGen*.dll" />
+      <FilesToDelete Include="$(PublishDir)\nuget*.dll" />
+      <FilesToDelete Include="$(PublishDir)\*.pdb" />
+      <FilesToDelete Include="$(PublishDir)\*.xml" />
+      <!-- Dev-only config -->
+      <FilesToDelete Include="$(PublishDir)\appsettings.Development.json" />
+      <FilesToDelete Include="$(PublishDir)\bundleconfig.json" />
+      <FilesToDelete Include="$(PublishDir)\libman.json" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+  </Target>
+
+</Project>

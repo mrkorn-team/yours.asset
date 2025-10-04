@@ -1,0 +1,36 @@
+﻿/** Copyright © licensed - ยัวร์วิชั่นฯ (https://yourvisioninfo.com), all rights reserved. */
+/* Leftbar */
+.gptmenu {
+  transition: all 0.3s;
+}
+.gptmenu .nav-link {
+  color: hsl(from var(--bs-body-color) h s l/.75) !important;
+}
+.gptmenu .nav-link {
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin: 5px 0;
+  transition: background 0.2s, font-size .05s, padding .05s;
+}
+.gptmenu .nav-link:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  text-decoration: none;
+  color: var(--bs-body-color) !important;
+}
+.gptmenu .nav-link.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--bs-body-color) !important;
+}
+
+/* Leftbar Dropdown */
+.gptmenu .collapse .nav-link {
+  font-size: 0.95rem;
+  padding-left: 17.5px;
+}
+.gptmenu .nav-link[aria-expanded="true"] i.bi-chevron-right {
+  transform: rotate(90deg);
+  transition: transform 0.2s;
+}
+.gptmenu .nav-link i.bi-chevron-right {
+  transition: transform 0.2s;
+}

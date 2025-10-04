@@ -1,0 +1,19 @@
+﻿@page
+@model IndexModel
+@{
+  ViewData["Title"] = "Home page";
+  var urdomain = core.urdomain;
+  var urvision = core.urvision;
+}
+
+<div class="text-center">
+  <h1 class="display-4">Welcome</h1>
+  <p><a href="@urdomain">@urvision</a> your productivities.</p>
+</div>
+
+<div class="text-center d-none">
+  @for (var n = 1; n <= 50; n++)
+  {
+    <div><a href="js:">Item#@n</a></div>
+  }
+</div>

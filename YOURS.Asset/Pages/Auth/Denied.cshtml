@@ -1,0 +1,11 @@
+@page
+@model DeniedModel
+@{
+  var title = ViewData["title"] = "Access Denied";
+}
+
+<div class="text-center mt-5">
+  <h1>@Html.Raw(Model.Title)</h1>
+  <p class="py-2 text-muted">@Html.Raw(Model.Message)</p>
+  <a href="/" class="btn btn-primary text-decoration-none">Go Home</a>
+</div>

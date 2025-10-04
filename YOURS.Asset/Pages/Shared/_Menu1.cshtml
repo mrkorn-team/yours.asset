@@ -1,0 +1,103 @@
+﻿<!-- gptmenu v1.0.0 -->
+<nav class="gptmenu px-1 pt-3">
+  <div class="small text-uppercase text-secondary fw-semibold">Dashboard</div>
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/index" id="home">
+        <i class="bi bi-house-door"></i> Home
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/privacy">
+        <i class="bi bi-info-circle"></i> Privacy
+      </a>
+    </li>
+  </ul>
+
+  <hr />
+  <div class="text-secondary fw-semibold small text-uppercase">Accounts</div>
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/auth/login">
+        <i class="bi bi-box-arrow-in-right"></i> Sign in (ex)
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/auth/logout">
+        <i class="bi bi-unlock2"></i> Sign out (ex)
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/auth/denied?message=Sign in for permission&title=Page Denied">
+        <i class="bi bi-ban"></i> Denied
+      </a>
+    </li>
+  </ul>
+
+  <hr />
+  <div class="small text-uppercase text-secondary fw-semibold">Examples</div>
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/ex/sample1">
+        <i class="bi bi-app"></i> Sample 1
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/ex/sample1?handler=h1">
+        <i class="bi bi-app"></i> Sample 1 h1
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/ex/sample1?handler=-h2">
+        <i class="bi bi-app"></i> Sample 1 h2
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" asp-page="/shared/ex/sample1" asp-route-r1="1">
+        <i class="bi bi-app"></i> Sample 1 r1=1
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" asp-page="/shared/ex/sample1" asp-route-r1="2">
+        <i class="bi bi-app"></i> Sample 1 r1=2
+      </a>
+    </li>
+
+    <!-- Dropdown Menu -->
+    <li class="nav-item">
+      <a class="nav-link text-white d-flex justify-content-between align-items-center"
+         data-bs-toggle="collapse" href="#usersMenu" role="button" aria-expanded="false" aria-controls="usersMenu">
+        <span><i class="bi bi-people"></i> Users</span>
+        <i class="bi bi-chevron-right small"></i>
+      </a>
+      <div class="collapse" id="usersMenu">
+        <ul class="nav flex-column ms-3">
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/ex/sample2">
+              <i class="bi bi-app"></i> Sample 2
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="js:"><i class="bi bi-person-plus"></i> Add User</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="js:">
+              <i class="bi bi-gear"></i> Manage Users
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="js:">
+              <i class="bi bi-shield-lock"></i> Roles
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link text-white" href="js:">
+        <i class="bi bi-telephone"></i> Contact
+      </a>
+    </li>
+  </ul>
+</nav>

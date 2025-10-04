@@ -1,0 +1,104 @@
+#resultsTable .sort-icon, #resultsTable .sort-header {
+  cursor: pointer;
+}
+
+/* Styling for Shared Files Browser */
+.list-group-item a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.list-group-item a:hover {
+  text-decoration: underline;
+}
+
+.bi-folder-fill {
+  color: #f0ad4e; /* gold */
+}
+
+.bi-file-earmark-text {
+  color: #5bc0de; /* blue */
+}
+
+.list-group-item a.active {
+  font-weight: 600;
+  color: var(--bs-primary) !important;
+}
+
+/* Make sure icons never have underline */
+.list-group-item a.text-decoration-none {
+  text-decoration: none !important;
+}
+
+/* Dark mode */
+[data-bs-theme="dark"] .list-group-item {
+  background-color: #222;
+  color: #ddd;
+}
+
+[data-bs-theme="dark"] pre {
+  background-color: #1a1a1a;
+  color: #f8f9fa;
+}
+
+/* Scoped breadcrumb styling for SharedFiles page */
+.sharedfiles-breadcrumb {
+  margin-bottom: 0;
+  gap: 0.25rem;
+}
+
+.sharedfiles-breadcrumb .breadcrumb-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  max-width: 200px;
+}
+
+.sharedfiles-breadcrumb .breadcrumb-link:hover .crumb-icon {
+  text-decoration: none !important;
+}
+
+.sharedfiles-breadcrumb .breadcrumb-link:hover .crumb-text {
+  text-decoration: underline;
+}
+
+.sharedfiles-breadcrumb .crumb-icon {
+  margin-right: 0.25rem;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.sharedfiles-breadcrumb .crumb-text {
+  display: inline-block;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+}
+
+/* Code block readability for Prism */
+pre[class*="language-"],
+code[class*="language-"] {
+  font-family: "Fira Code", "Cascadia Code", Consolas, Menlo, Monaco, "Courier New", monospace;
+  font-size: .95rem;
+  line-height: 1.4rem;
+  letter-spacing: 0.0rem;
+  text-shadow: none !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dark theme background fix (in case Prism CSS loads slow) */
+[data-bs-theme="dark"] pre[class*="language-"] {
+  background-color: #1e1e1e !important;
+  color: #eee !important;
+}
+
+/* Light theme fallback */
+[data-bs-theme="light"] pre[class*="language-"] {
+  background-color: #f8f9fa !important;
+  color: #212529 !important;
+}

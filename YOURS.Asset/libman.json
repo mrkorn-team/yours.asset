@@ -1,0 +1,395 @@
+/**Copyright©licensed-ยัวร์วิชั่นฯ(https://yourvisioninfo.com),allrightsreserved.*/
+{
+  "version": "3.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "bootstrap@5.3.8",
+    //  "destination": "wwwroot/libs/bootstrap/dist",
+    //  "files": [
+    //    "css/bootstrap.css",
+    //    "css/bootstrap.min.css",
+    //    "js/bootstrap.bundle.js",
+    //    "js/bootstrap.bundle.min.js"
+    //  ]
+    //},
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "jquery@3.7.1",
+    //  "destination": "wwwroot/libs/jquery/dist/",
+    //  "files": [
+    //    "jquery.js",
+    //    "jquery.min.js"
+    //  ]
+    //},
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "jquery-validate@1.21.0",
+    //  "destination": "wwwroot/libs/jquery-validate/dist",
+    //  "files": [
+    //    "additional-methods.js",
+    //    "additional-methods.min.js",
+    //    "jquery.validate.js",
+    //    "jquery.validate.min.js"
+    //  ]
+    //},
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "jquery-validation-unobtrusive@4.0.0",
+    //  "destination": "wwwroot/libs/jquery-validation-unobtrusive/dist",
+    //  "files": [
+    //    "jquery.validate.unobtrusive.min.js",
+    //    "jquery.validate.unobtrusive.js"
+    //  ]
+    //},
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "jquery-confirm@3.3.4",
+    //  "destination": "wwwroot/libs/jquery-confirm/dist"
+    //},
+
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "jqueryui@1.14.1",
+    //  "destination": "wwwroot/libs/jquery-ui/dist",
+    //  "files": [
+    //    "jquery-ui.js",
+    //    "jquery-ui.min.js",
+    //    "themes/base/jquery-ui.css",
+    //    "themes/base/jquery-ui.min.css",
+    //    "themes/base/theme.css",
+    //    "themes/base/theme.min.css"
+    //  ]
+    //},
+
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "simplebar@6.3.2",
+    //  "destination": "wwwroot/libs/simplebar/dist/",
+    //  "files": [
+    //    "simplebar.js",
+    //    "simplebar.min.js",
+    //    "simplebar.css",
+    //    "simplebar.min.css"
+    //  ]
+    //},
+
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "bootstrap-icons@1.13.1",
+    //  "destination": "wwwroot/libs/bootstrap-icons/dist",
+    //  "files": [
+    //    "bootstrap-icons.svg",
+    //    "font/bootstrap-icons.css",
+    //    "font/bootstrap-icons.min.css",
+    //    "font/fonts/bootstrap-icons.woff",
+    //    "font/fonts/bootstrap-icons.woff2"
+    //  ]
+    //},
+
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\adminlte\\4.0.0-rc4",
+    //  "destination": "wwwroot/libs/adminlte/dist/",
+    //  "files": [
+    //    "adminlte.min.css",
+    //    "adminlte.min.js"
+    //  ]
+    //},
+
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\bootstrap-select\\1.14.0-beta3.2\\css",
+    //  "destination": "wwwroot/libs/bootstrap-select/dist/css"
+    //},
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\bootstrap-select\\1.14.0-beta3.2\\js",
+    //  "destination": "wwwroot/libs/bootstrap-select/dist/js"
+    //},
+
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "bootstrap-daterangepicker@3.1",
+    //  "destination": "wwwroot/libs/bootstrap-daterangepicker/dist",
+    //  "files": [
+    //    "daterangepicker.min.js",
+    //    "moment.min.js",
+    //    "daterangepicker.min.css",
+    //    "daterangepicker.js",
+    //    "daterangepicker.css"
+    //  ]
+    //},
+
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "compressorjs@1.2.1",
+    //  "destination": "wwwroot/libs/compressorjs/dist"
+    //},
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "html2canvas@1.4.1",
+    //  "destination": "wwwroot/libs/html2canvas/dist"
+    //},
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "jspdf@3.0.1",
+    //  "destination": "wwwroot/libs/jspdf/dist",
+    //  "files": [
+    //    "jspdf.umd.min.js",
+    //    "polyfills.umd.min.js"
+    //  ]
+    //},
+
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\googleapis-roboto\\48.0.0\\",
+    //  "destination": "wwwroot/libs/googleapis-roboto/dist/"
+    //},
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\googleapis-roboto\\48.0.0\\fonts\\",
+    //  "destination": "wwwroot/libs/googleapis-roboto/dist/fonts/"
+    //},
+
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\googleapis-sourcesans3\\5.0.12\\",
+    //  "destination": "wwwroot/libs/googleapis-sourcesans3/dist/"
+    //},
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\googleapis-sourcesans3\\5.0.12\\fonts\\",
+    //  "destination": "wwwroot/libs/googleapis-sourcesans3/dist/fonts/"
+    //}
+
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\googleapis-sourcesanspro\\22.0.0\\",
+    //  "destination": "wwwroot/libs/googleapis-sourcesans3/dist/"
+    //},
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\googleapis-sourcesanspro\\22.0.0\\fonts\\",
+    //  "destination": "wwwroot/libs/googleapis-sourcesans3/dist/fonts/"
+    //}
+
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\oo\\1.0.0\\css\\",
+    //  "destination": "wwwroot/libs/oo/dist/css/"
+    //},
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\oo\\1.0.0\\js\\",
+    //  "destination": "wwwroot/libs/oo/dist/js/"
+    //},
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\oo\\1.0.0\\assets\\img\\",
+    //  "destination": "wwwroot/libs/oo/dist/assets/img/"
+    //},
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\oo\\1.0.0\\assets\\svg\\",
+    //  "destination": "wwwroot/libs/oo/dist/assets/svg/"
+    //},
+
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "flag-icons@7.5.0",
+    //  "destination": "wwwroot/libs/flag-icons/dist",
+    //  "files": [
+    //    "css/flag-icons.css",
+    //    "css/flag-icons.min.css",
+    //    "flags/4x3/au.svg",
+    //    "flags/4x3/gb.svg",
+    //    "flags/4x3/jp.svg",
+    //    "flags/4x3/sg.svg",
+    //    "flags/4x3/th.svg",
+    //    "flags/4x3/us.svg"
+    //  ]
+    //},
+
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "popper.js@2.11.8",
+    //  "destination": "wwwroot/libs/popper/dist",
+    //  "files": [
+    //    "umd/popper.js",
+    //    "umd/popper.min.js"
+    //  ]
+    //},
+
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "select2@4.0.13",
+    //  "destination": "wwwroot/libs/select2/dist",
+    //  "files": [
+    //    "css/select2.css",
+    //    "css/select2.min.css",
+    //    "js/select2.js",
+    //    "js/select2.min.js"
+    //  ]
+    //},
+
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "overlayscrollbars@2.11.4",
+    //  "destination": "wwwroot/libs/overlayscrollbars/dist",
+    //  "files": [
+    //    "browser/overlayscrollbars.browser.es6.min.js",
+    //    "styles/overlayscrollbars.min.css",
+    //    "styles/overlayscrollbars.css",
+    //    "browser/overlayscrollbars.browser.es6.js"
+    //  ]
+    //},
+
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "w3-css@4.1.0",
+    //  "destination": "wwwroot/libs/w3-css/dist",
+    //  "files": [
+    //    "w3.css",
+    //    "w3.min.css"
+    //  ]
+    //},
+
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "mdb-ui-kit@9.1.0",
+    //  "destination": "wwwroot/libs/mdb-ui-kit/dist",
+    //  "files": [
+    //    "mdb.min.css",
+    //    "mdb.umd.min.js"
+    //  ]
+    //},
+
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\float-labels\\3.3.9",
+    //  "destination": "wwwroot/libs/float-labels/dist"
+    //},
+
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\floating-labels\\1.1.0",
+    //  "destination": "wwwroot/libs/floating-labels/dist"
+    //},
+
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\admin\\1.0.0",
+    //  "destination": "wwwroot/libs/admin/dist"
+    //},
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\admin\\1.0.0\\assets\\img",
+    //  "destination": "wwwroot/libs/admin/dist/assets/img"
+    //},
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\admin\\1.0.0\\assets\\svg",
+    //  "destination": "wwwroot/libs/admin/dist/assets/svg"
+    //},
+
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\menubar\\1.0.0",
+    //  "destination": "wwwroot/libs/menubar/dist"
+    //},
+
+    ////////////////////////////////
+    // Application Implementation
+    ////////////////////////////////
+
+    {
+      "provider": "cdnjs",
+      "library": "bootstrap@5.3.8",
+      "destination": "wwwroot/libs/bootstrap/dist",
+      "files": [
+        "css/bootstrap.css",
+        "css/bootstrap.min.css",
+        "js/bootstrap.bundle.js",
+        "js/bootstrap.bundle.min.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery@3.7.1",
+      "destination": "wwwroot/libs/jquery/dist/",
+      "files": [
+        "jquery.js",
+        "jquery.min.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-validate@1.21.0",
+      "destination": "wwwroot/libs/jquery-validate/dist",
+      "files": [
+        "additional-methods.js",
+        "additional-methods.min.js",
+        "jquery.validate.js",
+        "jquery.validate.min.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-validation-unobtrusive@4.0.0",
+      "destination": "wwwroot/libs/jquery-validation-unobtrusive/dist",
+      "files": [
+        "jquery.validate.unobtrusive.min.js",
+        "jquery.validate.unobtrusive.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-confirm@3.3.4",
+      "destination": "wwwroot/libs/jquery-confirm/dist"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bootstrap-icons@1.13.1",
+      "destination": "wwwroot/libs/bootstrap-icons/dist",
+      "files": [
+        "bootstrap-icons.svg",
+        "font/bootstrap-icons.css",
+        "font/bootstrap-icons.min.css",
+        "font/fonts/bootstrap-icons.woff",
+        "font/fonts/bootstrap-icons.woff2"
+      ]
+    }
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "simplebar@6.3.2",
+    //  "destination": "wwwroot/libs/simplebar/dist/",
+    //  "files": [
+    //    "simplebar.js",
+    //    "simplebar.min.js",
+    //    "simplebar.css",
+    //    "simplebar.min.css"
+    //  ]
+    //}
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\adminlte\\4.0.0-rc4",
+    //  "destination": "wwwroot/libs/adminlte/dist/",
+    //  "files": [
+    //    "adminlte.min.css",
+    //    "adminlte.min.js"
+    //  ]
+    //},
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\googleapis-roboto\\48.0.0\\",
+    //  "destination": "wwwroot/libs/googleapis-roboto/dist/"
+    //},
+    //{
+    //  "provider": "filesystem",
+    //  "library": "D:\\webpub\\httpdocs\\yours.asset\\wwwroot\\cdn\\googleapis-roboto\\48.0.0\\fonts\\",
+    //  "destination": "wwwroot/libs/googleapis-roboto/dist/fonts/"
+    //}
+  ]
+}

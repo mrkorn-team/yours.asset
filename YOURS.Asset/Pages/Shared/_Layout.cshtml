@@ -1,0 +1,230 @@
+@using System.Security.Claims
+@{
+  /// [how to] _ViewStart.cshtml -> Layout = "Admin/_Layout", _ViewImports.cshtml -> @addTagHelper *, Yours.Core
+  var title = ViewData["title"];
+  var urvision = core.urvision;
+  var urdomain = core.urdomain;
+  var metaDesc = core.MetaDescription;
+  var metaKeys = core.MetaKeywords;
+  var fileVers = $"{core.FileVersion} - {core.InformationVersion}";
+  var layout = (bool)(ViewData["layout"] ?? true);
+  var cdn = core.urlibs;
+  var dev = "~/$dev";
+  var fav = cdn + "/admin/dist/assets/svg/yourdata.svg";
+  var bgn = cdn + "/admin/dist/assets/img/bg1.jpg";
+  var svg = "/libs/bootstrap-icons/dist/bootstrap-icons.svg";
+  var errimage = svg + "#"; // appear image empty
+  var strcompr = StringComparison.OrdinalIgnoreCase;
+  var userGuid = default(string);
+  var dispName = "";
+  var userName = "ผู้ใช้งาน";
+  var userImge = string.Empty;
+  var userThmb = string.Empty;
+  var isAuthen = User.Identity?.IsAuthenticated ?? default;
+  if (isAuthen)
+  {
+    userGuid = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    dispName = User.FindFirst(ClaimTypes.Email)?.Value?.Split('@').First();
+    userName = User.Claims.FirstOrDefault(m => m.Type.EndsWith("dispname", strcompr))?.Value ?? dispName;
+    userImge = User.Claims.FirstOrDefault(m => m.Type.EndsWith("picture", strcompr))?.Value ?? "";
+    userThmb = User.Claims.FirstOrDefault(m => m.Type.EndsWith("thumbnail", strcompr))?.Value;
+  }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html" charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="google" content="notranslate" />
+  <meta name="author" content="mrkorn" />
+  <meta name="description" content="@metaDesc" />
+  <meta name="keywords" content="@metaKeys" />
+  <title>@urvision - @ViewData["Title"]</title>
+  <script type="importmap"></script>
+  <link rel="stylesheet" href="@cdn/googleapis-roboto/dist/roboto.css" />
+  @* <link rel="stylesheet" href="@cdn/adminlte/dist/adminlte.min.css" /> *@
+  <link rel="stylesheet" href="@cdn/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="@cdn/bootstrap-icons/dist/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="@cdn/simplebar/dist/simplebar.min.css" />
+  <link rel="stylesheet" href="@cdn/jquery-confirm/dist/jquery-confirm.min.css" />
+  <link rel="stylesheet" href="@dev/admin/dist/admin.css" asp-append-version="true" />
+  <link rel="stylesheet" href="@dev/gptmenu/dist/gptmenu.css" asp-append-version="true" />
+  <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+  @await RenderSectionAsync("Styles", required: false)
+
+  <script src="@cdn/jquery/dist/jquery.min.js"></script>
+  <script src="@cdn/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="@cdn/jquery-confirm/dist/jquery-confirm.min.js"></script>
+  <script src="@cdn/simplebar/dist/simplebar.min.js"></script>
+  <script src="@dev/admin/dist/admin.js" asp-append-version="true"></script>
+</head>
+<body class="rightbar-collapsed">
+  @if (!layout)
+  {
+    <div class="layout-none">@RenderBody()</div>
+  }
+  else
+  {
+    <div class="wrapper">
+      <ul class="ulist topbar topbar-left d-flex">
+        <li>
+          <a role="button" class="fs-3 p-1 my-1" data-toggle="leftbar-collapsed" --data-bs-theme--="dark">
+            <svg class="ico"><use xlink:href="@svg#list"></use></svg>
+          </a>
+        </li>
+      </ul>
+      <ul class="ulist topbar topbar-right d-flex mt-1 me-2">
+        @if (isAuthen)
+        {
+          <li class="usercontainer dropdown dropdown-hover--">
+            <a role="button" class="userlink" data-bs-toggle="dropdown">
+              @if (!string.IsNullOrEmpty(userThmb))
+              {
+                <img src="@userThmb" data-full="@userImge" class="userphoto" onerror="this.src='@errimage'" />
+              }
+              else
+              {
+                <img src="@userImge" class="userphoto" onerror="this.src='@errimage'" />
+              }
+            </a>
+            <div class="username">@userName</div>
+            <ul class="dropdown-menu">
+              <li>
+                <a asp-page="/auth/profile" asp-route-id="@userGuid" class="dropdown-item d-inline-flex align-items-center">
+                  <img src="@userImge" class="userphoto-dropdown" onerror="this.src='@errimage'" />
+                  บัญชี @userName
+                </a>
+              </li>
+              <li>
+                <a asp-page="/auth/register" class="dropdown-item d-inline-flex align-items-center">
+                  <svg class="ico me-2 fs-5"><use xlink:href="@svg#person-plus-fill"></use></svg>
+                  สร้างบัญชีใหม่
+                </a>
+              </li>
+              <li>
+                <a asp-page="/auth/logout" class="dropdown-item d-inline-flex align-items-center">
+                  <svg class="ico me-2 fs-5"><use xlink:href="@svg#unlock-fill"></use></svg>
+                  Logout
+                </a>
+              </li>
+            </ul>
+          </li>
+        }
+        else
+        {
+          <li>
+            <a role="button" asp-page="/auth/login" class="border rounded-5 me-2 d-inline-flex align-items-center gap-1 bg-body-secondary text-decoration-none" style="padding:.35rem .5rem">
+              <svg class="ico fs-5"><use xlink:href="@svg#incognito"></use></svg>
+              <span style="margin-top:.125rem">Login</span>
+            </a>
+          </li>
+        }
+        <li>
+          <a role="button" class="fs-5 p-2" data-toggle-theme>
+            <svg class="ico"><use xlink:href="@svg#circle-half"></use></svg>
+          </a>
+        </li>
+        <li>
+          <a role="button" class="fs-5 p-2" data-toggle-fullscreen>
+            <svg data-fullscreen-icon="maximize" class="ico"><use xlink:href="@svg#fullscreen"></use></svg>
+            <svg data-fullscreen-icon="minimize" class="ico d-none"><use xlink:href="@svg#fullscreen-exit"></use></svg>
+          </a>
+        </li>
+        <li>
+          <a role="button" class="fs-5 p-2" data-toggle="rightbar-collapsed">
+            <svg class="ico"><use xlink:href="@svg#ui-checks-grid"></use></svg>
+          </a>
+        </li>
+      </ul>
+      <div class="leftbar bg-body-gradient" data-bs-theme="dark">
+        <div class="header">
+          <div class="bg-wrap" style="--uo-bg-wrap-bg-img:url('@bgn')">
+            <a asp-page="/auth/logout" onclick="this.blur()">
+              @if (!string.IsNullOrEmpty(userThmb))
+              {
+                <img src="@userThmb" data-full="@userImge" onerror="this.src='@errimage'" data-bs-toggle="tooltip" title="Logout" />
+              }
+              else
+              {
+                <img src="@userImge" onerror="this.src='@errimage'" data-bs-toggle="tooltip" title="Logout" />
+              }
+            </a>
+            <span>@userName</span>
+          </div>
+        </div>
+        <div class="menu" data-simplebar>
+          <partial name="_menu1" />
+        </div>
+        <div class="footer">
+          <div class="d-flex align-items-center justify-content-center h-100 pb-2">
+            <div class="text-uppercase d-flex align-items-center" style="font-size: 78%">
+              Productivity
+              <svg class="ico mx-2"><use xlink:href="@svg#arrow-right-circle"></use></svg>
+              Cost Saving
+            </div>
+          </div>
+          <div class="position-absolute bottom-0 d-flex w-100">
+            <div class="text-secondary-emphasis mx-auto" style="font-size:60.5%">
+              <span class="text-uppercase">Enterprise Version</span> @fileVers
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rightbar p-3">
+        <a class="btn btn-close position-absolute top-0 end-0 me-2 mt-2 p-2" data-toggle="rightbar-collapsed"></a>
+        <h6 class="text-uppercase">Factory Content</h6>
+        <ul>
+          <li>
+            Wanna join..
+            <svg class="ico"><use xlink:href="@svg#music-note-beamed"></use></svg>
+          </li>
+        </ul>
+      </div>
+      <div class="main p-2 pt-4">
+        <div class="container-fluid pt-3">
+          <span class="fs-3 fw-medium">@title</span>
+          <span class="breadcrumb d-flex align-items-center pt-1">
+            <span class="breadcrumb-item">
+              <a href="/" class="d-flex align-items-center">
+                <svg class="ico me-1 fs-5" style="margin-bottom:.35rem"><use xlink:href="@svg#house-door"></use></svg>
+                <span>Home</span>
+              </a>
+            </span>
+            @if (IsSectionDefined("Breadcrumbs"))
+            {
+              @await RenderSectionAsync("Breadcrumbs", required: false)
+            }
+            else
+            {
+              <span class="breadcrumb-item active">@title</span>
+            }
+          </span>
+          <main>@RenderBody()</main>
+        </div>
+      </div>
+      <div class="footer bg-transparent border-0">
+        <div class="d-flex justify-content-between align-items-center h-100 px-3 small">
+          <div>
+            <a href="@urdomain">@urvision</a>
+            <span class="vr mx-1"></span>
+            <a asp-page="/policy/terms">Term</a>
+          </div>
+          <div>Anythings you want.</div>
+        </div>
+      </div>
+      <div class="backdrop" data-toggle="leftbar-collapsed"></div>
+      <div class="backdrop" data-toggle="rightbar-collapsed"></div>
+    </div>
+  }
+
+  @Html.AntiForgeryToken()
+
+  <script src="@dev/menubar/dist/menubar.js" asp-append-version="true"></script>
+  <script src="@dev/gptmenu/dist/gptmenu.js" asp-append-version="true"></script>
+  <script src="~/js/site.js" asp-append-version="true"></script>
+  @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

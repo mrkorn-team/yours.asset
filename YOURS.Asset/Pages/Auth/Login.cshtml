@@ -1,0 +1,85 @@
+﻿@page
+@model LoginModel
+@{
+  var title = ViewData["title"] = "Simple Login";
+  ViewData["layout"] = false;
+}
+
+<div class="login">
+  <div class="login-card p-4">
+    <h3 class="mb-3">Welcome back!</h3>
+    <form id="loginForm" method="post" class="d-flex flex-column gap-2">
+      <div class="input-group">
+        <input type="email" name="Email" class="form-control" placeholder="Email" required value="test@example.com" />
+        <i class="bi bi-x-lg btn btn-light border text-muted" onclick="this.parentElement.querySelector('input').value=''"></i>
+      </div>
+      <div class="input-group">
+        <input type="password" name="Password" class="form-control" placeholder="Password" required value="1122" />
+        <i class="bi bi-eye-slash btn btn-light border text-muted"></i>
+      </div>
+      <button type="submit" class="form-control btn btn-primary">Login</button>
+    </form>
+
+    <div id="message" class="my-3"></div>
+
+    <div class="text-center small"><a href="/index"><i class="bi bi-house-door me-1"></i>Back to home</a></div>
+  </div>
+</div>
+
+@section Scripts {
+  <script>
+    const form = document.getElementById('loginForm');
+    const message = document.getElementById('message');
+
+    form?.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      showmsg('Processing...', 'text-primary');
+
+      try {
+        const formData = new FormData(form);
+
+        const resp = await fetch(form.action || window.location.href, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            //'antiforgery-token': document.querySelector('[name="antiforgery-token"]').value
+          }
+        });
+
+        // Always parse JSON safely
+        let data;
+        try {
+          if (resp.status === 401) {
+            showmsg("Please login first!");
+          } else if (resp.status === 403) {
+            showmsg("Access denied!");
+          } else {
+            data = await resp.json();
+          }
+        } catch {
+          data = { success: false, message: 'Server did not return JSON' };
+        }
+
+        if (data?.success && data?.redirectUrl) {
+          window.location.href = data.redirectUrl
+        } else {
+          showmsg(data?.message || 'No message returned', 'text-danger');
+        }
+
+      } catch (err) {
+        showmsg('Error: ' + err.message, 'text-danger');
+      } finally {
+        submitBtn.disabled = false;
+      }
+
+      function showmsg(s, textColor) {
+        if (!message) return;
+        message.innerHTML = `<div class="${textColor}">${s}</div>`;
+      }
+    });
+  </script>
+}

@@ -1,0 +1,55 @@
+# Build results
+/.vs
+bin/
+obj/
+out/
+*.exe
+*.dll
+*.log
+*.vspscc
+*.vssscc
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / VSCode / JetBrains
+.idea/
+.vscode/
+*.sw?
+
+# NuGet
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Dotnet Tools
+tools/
+
+# Logs
+logs/
+*.log
+*.tlog
+
+# Publish
+*.pubxml
+*.publishsettings
+wwwroot/lib/
+wwwroot/dist/
+wwwroot/appdata/
+
+# Configuration
+appsettings.*.json
+!appsettings.Development.json
+
+# Secrets
+secrets.json
+
+# Other
+.env
+**/wwwroot/appdata/
+**/wwwroot/temp/

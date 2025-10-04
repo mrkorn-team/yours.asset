@@ -1,0 +1,154 @@
+@page "/shared"
+@model YOURS.Asset.Pages.SharedFiles.IndexModel
+@{
+  ViewData["Title"] = "Shared Browser";
+}
+
+<div class="container py-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-body-tertiary">
+      <h4 class="mb-0">@ViewData["Title"]</h4>
+    </div>
+
+    <div class="card-body">
+
+      <!-- Breadcrumb -->
+      <nav aria-label="breadcrumb" class="mb-1">
+        <ol class="breadcrumb sharedfiles-breadcrumb">
+          @for (int i = 0; i < Model.Breadcrumb.Count; i++)
+          {
+            var crumb = Model.Breadcrumb[i];
+
+            if (i == 0)
+            {
+              if (Model.Breadcrumb.Count > 1)
+              {
+                <li class="breadcrumb-item">
+                  <a href="@Url.Page("./Index", new { path = crumb.RelativePath })"
+                     data-bs-toggle="tooltip" data-bs-title="@crumb.Tooltip">
+                    <i class="bi bi-folder-fill text-warning me-1"></i><span>@crumb.Name</span>
+                  </a>
+                </li>
+              }
+              else
+              {
+                <li class="breadcrumb-item text-muted" aria-current="page"
+                    data-bs-toggle="tooltip" data-bs-title="@crumb.Tooltip">
+                  <i class="bi bi-folder-fill text-warning me-1"></i><span>@crumb.Name</span>
+                </li>
+              }
+            }
+            else if (i < Model.Breadcrumb.Count - 1)
+            {
+              <li class="breadcrumb-item">
+                <a href="@Url.Page("./Index", new { path = crumb.RelativePath })"
+                   data-bs-toggle="tooltip" data-bs-title="@crumb.Tooltip">
+                  <span>@crumb.Name</span>
+                </a>
+              </li>
+            }
+            else
+            {
+              <li class="breadcrumb-item text-muted" aria-current="page"
+                  data-bs-toggle="tooltip" data-bs-title="@crumb.Tooltip">
+                <span>@crumb.Name</span>
+              </li>
+            }
+          }
+        </ol>
+      </nav>
+
+      <!-- 🔍 Search -->
+      @if (!Model.IsFileView)
+      {
+        <form method="get" class="mb-3">
+          <input type="hidden" name="path" value="@Model.CurrentPath" />
+          <div class="input-group">
+            <button id="searchClearBtn" type="button" class="btn btn-outline-secondary">
+              <i class="bi bi-x-lg"></i>
+            </button>
+            <input type="text" class="form-control" name="search"
+                   placeholder="Search in this folder & subfolders..." value="@Model.Search" />
+            <button type="submit" class="btn btn-outline-secondary">
+              <i class="bi bi-search"></i> Search
+            </button>
+          </div>
+        </form>
+      }
+
+      @if (!Model.IsFileView)
+      {
+        @if (!string.IsNullOrEmpty(Model.ParentPath))
+        {
+          <p><a href="@Url.Page("./Index", new { path = Model.ParentPath })">🔼 Up one level</a></p>
+        }
+
+        <div id="resultsContainer">
+          @await Html.PartialAsync("_ResultsPartial", Model)
+        </div>
+      }
+      else
+      {
+        <hr />
+        <h5>Viewing: @Model.FileName</h5>
+
+        @if (Model.IsImage)
+        {
+          <img src="@Model.FileUrl" class="img-fluid border" />
+        }
+        else if (Model.IsTextFile)
+        {
+          <pre class="border p-2"><code class="@GetPrismLanguage(Model.FileExt)">@Model.FileContent</code></pre>
+        }
+        else
+        {
+          <div class="alert alert-info">
+            Download started for <strong>@Model.FileName</strong>.
+          </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ParentPath))
+        {
+          <p class="mt-3"><a href="@Url.Page("./Index", new { path = Model.ParentPath })">⬅ Back to folder</a></p>
+        }
+      }
+    </div>
+    <div class="card-footer text-muted small">
+      Shared Browser powered by Razor Pages + Bootstrap
+    </div>
+  </div>
+</div>
+
+@section Styles {
+  <!-- ✅ Prism theme auto-switch -->
+  <link id="prismTheme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" />
+
+  <link rel="stylesheet" href="~/css/sharedFiles.css" asp-append-version="true" />
+}
+
+@section Scripts {
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+  <script src="~/js/sharedFiles.js" asp-append-version="true"></script>
+}
+
+@functions {
+  private string GetPrismLanguage(string? ext)
+  {
+    return ext switch
+    {
+      ".cs" or ".cshtml.cs" => "language-csharp",
+      ".cshtml" => "language-markup",
+      ".js" => "language-javascript",
+      ".css" => "language-css",
+      ".json" => "language-json",
+      ".html" or ".htm" => "language-markup",
+      ".md" => "language-markup",
+      _ => "language-none"
+    };
+  }
+}
