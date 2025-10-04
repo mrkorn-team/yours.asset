@@ -1,14 +1,14 @@
 @model YOURS.Asset.Pages.SharedFiles.IndexModel
 
-@if (Model.Entries.Any())
+@if (Model.Entries != null && Model.Entries.Count > 0)
 {
   <div class="table-responsive">
-    <table class="table table-sm table-hover table-striped align-middle" id="resultsTable">
+    <table id="resultsTable" class="table align-middle table-hover mb-1">
       <thead>
         <tr>
-          <th scope="col" data-sort="name"><span class="sort-header">Name</span> <span class="sort-icon"><i class="bi bi-arrow-down-up"></i></span></th>
-          <th scope="col" class="text-end" data-sort="size"><span class="sort-header">Size</span> <span class="sort-icon"><i class="bi bi-arrow-down-up"></i></span></th>
-          <th scope="col" class="text-end" data-sort="date"><span class="sort-header">Modified</span> <span class="sort-icon"><i class="bi bi-arrow-down-up"></i></span></th>
+          <th scope="col" data-sort="name">Name <span class="sort-icon"><i class="bi bi-arrow-down-up"></i></span></th>
+          <th scope="col" class="text-end" data-sort="size">Size <span class="sort-icon"><i class="bi bi-arrow-down-up"></i></span></th>
+          <th scope="col" class="text-end" data-sort="date">Modified <span class="sort-icon"><i class="bi bi-arrow-down-up"></i></span></th>
         </tr>
       </thead>
       <tbody>
