@@ -43,8 +43,6 @@ app.UseAuthorization();
 app.MapRazorPages()
   .WithStaticAssets();
 
-app.MapEndPoints(); // from ApiEndPoints.cs
-
 app.Run();
 
 internal static class Startup

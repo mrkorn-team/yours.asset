@@ -341,18 +341,6 @@ class SharedFiles {
     }
   }
 
-  showToast(message, isError = false) {
-    const toastEl = document.getElementById("uploadToast");
-    if (!toastEl) return;
-
-    toastEl.classList.toggle("text-bg-success", !isError);
-    toastEl.classList.toggle("text-bg-danger", isError);
-    toastEl.querySelector(".toast-body").textContent = message;
-
-    const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
-    toast.show();
-  }
-
   _getSortValue(row, key) {
     switch (key) {
       case "name":
@@ -386,6 +374,42 @@ class SharedFiles {
       .replaceAll(">", "&gt;")
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
+  }
+
+  showToast(message, type = "info") {
+    // Remove old toasts if any
+    document.querySelectorAll(".sharedfiles-toast").forEach(t => t.remove());
+
+    const bgClass = {
+      success: "bg-success text-white",
+      danger: "bg-danger text-white",
+      warning: "bg-warning text-dark",
+      info: "bg-info text-dark"
+    }[type] || "bg-secondary text-white";
+
+    const toast = document.createElement("div");
+    toast.className = `toast align-items-center border-0 show sharedfiles-toast ${bgClass}`;
+    toast.role = "alert";
+    toast.ariaLive = "assertive";
+    toast.ariaAtomic = "true";
+    toast.style.position = "fixed";
+    toast.style.bottom = "1rem";
+    toast.style.right = "1rem";
+    toast.style.zIndex = "2000";
+    toast.innerHTML = `
+    <div class="d-flex">
+      <div class="toast-body">${message}</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  `;
+
+    document.body.appendChild(toast);
+
+    // Auto hide after 4s
+    setTimeout(() => {
+      toast.classList.remove("show");
+      setTimeout(() => toast.remove(), 500);
+    }, 4000);
   }
 
   // ✅ Prism theme switching

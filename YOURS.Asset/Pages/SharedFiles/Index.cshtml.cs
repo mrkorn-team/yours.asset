@@ -4,6 +4,7 @@ using System.IO;
 
 namespace YOURS.Asset.Pages.SharedFiles
 {
+  [IgnoreAntiforgeryToken]
   public class IndexModel : PageModel
   {
     private readonly IWebHostEnvironment _env;
@@ -124,6 +125,44 @@ namespace YOURS.Asset.Pages.SharedFiles
       }
 
       return NotFound();
+    }
+
+    public async Task<IActionResult> OnPostUploadAsync(List<IFormFile> files, string? path)
+    {
+      try
+      {
+        if (files == null || files.Count == 0)
+          return BadRequest("No files received.");
+
+        var root = Path.Combine(_env.WebRootPath, "appdata", "shared");
+        var targetDir = string.IsNullOrEmpty(path)
+            ? root
+            : Path.Combine(root, path);
+
+        if (!Directory.Exists(targetDir))
+          Directory.CreateDirectory(targetDir);
+
+        foreach (var file in files)
+        {
+          if (file.Length > 30 * 1024 * 1024)
+            return BadRequest($"File '{file.FileName}' exceeds 30 MB limit.");
+
+          var destPath = Path.Combine(targetDir, file.FileName);
+
+          await using var stream = new FileStream(destPath, FileMode.Create);
+          await file.CopyToAsync(stream);
+        }
+
+        return new JsonResult(new { success = true });
+      }
+      catch (IOException ioEx)
+      {
+        return BadRequest($"File error: {ioEx.Message}");
+      }
+      catch (Exception ex)
+      {
+        return BadRequest($"Upload failed: {ex.Message}");
+      }
     }
 
     private void BuildBreadcrumb(string currentPath)
