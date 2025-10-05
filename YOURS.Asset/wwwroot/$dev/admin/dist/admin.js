@@ -167,39 +167,111 @@ class simplebar {
 
 class TooltipManager {
   constructor(container = document) {
-    if (typeof window.bootstrap === 'undefined') return;
-
     this.container = container;
-    this.prepareHtml();
-    this.initTooltips();
+    this.tooltipEl = null;
+    this.hideTimer = null;
+    this.init();
   }
 
-  prepareHtml () {
-    const elements = this.container.querySelectorAll('[data-bs-toggle="tooltip"]');
-    elements?.forEach((el) => {
-      if (!el.getAttribute('data-bs-html')) {
-        el.setAttribute('data-bs-html', 'true');
-        const title = el.getAttribute('title');
-        if (title && !title.startsWith('<em>')) {
-          el.setAttribute('title', `<em>${title}</em>`);
-        }
-      }
+  init() {
+    this.createTooltipEl();
+
+    // Attach hover listeners to all tooltip-enabled elements
+    this.container.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => {
+      el.addEventListener("mouseenter", (e) => this.handleEnter(e, el));
+      el.addEventListener("mousemove", (e) => this.positionTooltip(e));
+      el.addEventListener("mouseleave", () => this.handleLeave());
     });
   }
 
-  initTooltips() {
-    var triggerList = [].slice.call(
-      this.container.querySelectorAll('[data-bs-toggle="tooltip"]')
-    );
-
-    triggerList.forEach((triggerEl) => {
-      if (bootstrap.Tooltip.getInstance(triggerEl)) return; // avoid duplicate
-      const tooltip = new bootstrap.Tooltip(triggerEl);
+  createTooltipEl() {
+    if (this.tooltipEl) return;
+    this.tooltipEl = document.createElement("div");
+    this.tooltipEl.className = "custom-tooltip";
+    Object.assign(this.tooltipEl.style, {
+      position: "fixed",
+      zIndex: "1080",
+      backgroundColor: "var(--bs-tertiary-bg)",
+      color: "var(--bs-body-color)",
+      padding: "4px 8px",
+      borderRadius: "4px",
+      fontSize: ".8rem",
+      pointerEvents: "none",
+      boxShadow: "0 2px 5px rgba(0,0,0,.25)",
+      opacity: "0",
+      transition: "opacity 0.05s linear",
+      visibility: "hidden",
+      maxWidth: "350px",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis"
     });
-    //var tooltipList = triggerList?.map(function (triggerEl) {
-    //  if (bootstrap.Tooltip.getInstance(triggerEl)) return; // avoid duplicate
-    //  return new bootstrap.Tooltip(triggerEl)
-    //});
+    document.body.appendChild(this.tooltipEl);
+  }
+
+  handleEnter(e, el) {
+    clearTimeout(this.hideTimer);
+    const text = el.getAttribute("title") || el.dataset.bsTitle || el.dataset.bsOriginalTitle || "";
+    if (!text) return;
+
+    // Remove native title tooltip
+    el.dataset.bsOriginalTitle = text;
+    el.removeAttribute("title");
+
+    this.tooltipEl.textContent = text;
+    this.positionTooltip(e);
+    this.showTooltip();
+  }
+
+  handleLeave() {
+    clearTimeout(this.hideTimer);
+    this.hideTimer = setTimeout(() => this.hideTooltip(), 60); // slight delay avoids flicker
+  }
+
+  positionTooltip(e) {
+    if (!this.tooltipEl) return;
+    const offsetX = 4;
+    const offsetY = 18;
+    let x = e.clientX + offsetX;
+    let y = e.clientY + offsetY;
+
+    const rect = this.tooltipEl.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // prevent off-screen
+    if (x + rect.width > vw - 8) x = vw - rect.width - 8;
+    if (y + rect.height > vh - 8) y = e.clientY - rect.height - offsetY;
+
+    this.tooltipEl.style.left = `${x}px`;
+    this.tooltipEl.style.top = `${y}px`;
+  }
+
+  showTooltip() {
+    if (!this.tooltipEl) return;
+    this.tooltipEl.style.visibility = "visible";
+    this.tooltipEl.style.opacity = "1";
+  }
+
+  hideTooltip() {
+    if (!this.tooltipEl) return;
+    this.tooltipEl.style.opacity = "0";
+    this.tooltipEl.style.visibility = "hidden";
+  }
+
+  // 🧹 Dispose safely
+  dispose(container = document) {
+    container.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => {
+      el.removeEventListener("mouseenter", this.handleEnter);
+      el.removeEventListener("mousemove", this.positionTooltip);
+      el.removeEventListener("mouseleave", this.handleLeave);
+    });
+  }
+
+  // ♻️ Quick refresh (destroy + rebuild)
+  refresh(container = document) {
+    this.dispose(container);
+    new TooltipManager(container);
   }
 }
 
@@ -360,7 +432,7 @@ class core {
 (() => document.addEventListener("DOMContentLoaded", () => {
   new toggler();
   new fullscreen();
-  new TooltipManager();
+  window.tooltipManager = new TooltipManager(); // ✅ Global singleton
   new simplebar();
   new BackdropKeydown();
   new LeftbarCollapsedTogglerColor();

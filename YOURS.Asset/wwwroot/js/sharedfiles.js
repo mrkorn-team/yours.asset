@@ -1,10 +1,9 @@
-// wwwroot/js/sharedFiles.js
 class SharedFiles {
   constructor() {
     this.init();
-    this.enableSorting();     // initial table load
-    this.refreshTooltips();   // init tooltips safely (scoped)
-    this.initPrismTheme();    // handle prism theme switching
+    this.enableSorting();
+    this.initTooltips();
+    this.initPrismTheme();
     this.enableDragDropUpload();
     this.attachLevelUpButton();
     this.enableBrowseUpload();
@@ -377,17 +376,26 @@ class SharedFiles {
     });
   }
 
+  initTooltips() {
+    if (window.tooltipManager instanceof TooltipManager) {
+      window.tooltipManager.init();  // use global instance
+    } else {
+      setTimeout(() => this.refreshTooltips(), 0); // safe fallback
+    }
+  }
+
   refreshTooltips(container = document) {
-    container.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-      if (!bootstrap.Tooltip.getInstance(el)) new bootstrap.Tooltip(el);
-    });
+    if (window.tooltipManager instanceof TooltipManager) {
+      window.tooltipManager.init(); // safely rebind tooltips
+    } else if (window.TooltipManager?.refresh) {
+      new TooltipManager(container); // fallback
+    }
   }
 
   disposeTooltips(container = document) {
-    container.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-      const instance = bootstrap.Tooltip.getInstance(el);
-      if (instance) instance.dispose();
-    });
+    if (window.tooltipManager instanceof TooltipManager) {
+      window.tooltipManager.hideTooltip();
+    }
   }
 
   escapeHtml(str) {
