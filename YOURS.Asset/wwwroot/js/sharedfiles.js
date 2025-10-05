@@ -6,6 +6,7 @@ class SharedFiles {
     this.refreshTooltips();   // init tooltips safely (scoped)
     this.initPrismTheme();    // handle prism theme switching
     this.enableDragDropUpload();
+    this.attachLevelUpButton();
     this.enableBrowseUpload();
   }
 
@@ -352,6 +353,28 @@ class SharedFiles {
       default:
         return "";
     }
+  }
+
+  attachLevelUpButton() {
+    const levelUpBtn = document.querySelector("#levelUpBtn");
+    if (!levelUpBtn) return;
+
+    levelUpBtn.addEventListener("click", async () => {
+      const pathInput = document.querySelector("input[name='path']");
+      const currentPath = pathInput?.value || "";
+      const parentPath = currentPath.split("/").slice(0, -1).join("/");
+
+      // show spinner in results area (reuse same UI)
+      const resultsContainer = document.querySelector("#resultsContainer");
+      resultsContainer.innerHTML = `
+      <div class="text-center my-3">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>`;
+
+      await this.updateSearchResults("", parentPath);
+    });
   }
 
   refreshTooltips(container = document) {
