@@ -1,4 +1,4 @@
-﻿/** Copyright © licensed - ยัวร์วิชั่นฯ (https://yourvisioninfo.com), all rights reserved. */
+/** Copyright © licensed - ยัวร์วิชั่นฯ (https://yourvisioninfo.com), all rights reserved. */
 
 class bstheme {
   "use strict";
@@ -165,27 +165,41 @@ class simplebar {
   }
 }
 
-class tooltip {
-  constructor() {
+class TooltipManager {
+  constructor(container = document) {
     if (typeof window.bootstrap === 'undefined') return;
 
-    this.tooltiphtml();
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList?.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
+    this.container = container;
+    this.prepareHtml();
+    this.initTooltips();
   }
-  tooltiphtml = () => {
-    const elements = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    elements?.forEach((element, i) => {
-      if (!element.getAttribute('data-bs-html')) {
-        element.setAttribute('data-bs-html', 'true');
-        const title = element.getAttribute('title');
-        if (!title?.startsWith('<em>')) {
-          element.setAttribute('title', `<em>${title}</em>`);
+
+  prepareHtml () {
+    const elements = this.container.querySelectorAll('[data-bs-toggle="tooltip"]');
+    elements?.forEach((el) => {
+      if (!el.getAttribute('data-bs-html')) {
+        el.setAttribute('data-bs-html', 'true');
+        const title = el.getAttribute('title');
+        if (title && !title.startsWith('<em>')) {
+          el.setAttribute('title', `<em>${title}</em>`);
         }
       }
     });
+  }
+
+  initTooltips() {
+    var triggerList = [].slice.call(
+      this.container.querySelectorAll('[data-bs-toggle="tooltip"]')
+    );
+
+    triggerList.forEach((triggerEl) => {
+      if (bootstrap.Tooltip.getInstance(triggerEl)) return; // avoid duplicate
+      const tooltip = new bootstrap.Tooltip(triggerEl);
+    });
+    //var tooltipList = triggerList?.map(function (triggerEl) {
+    //  if (bootstrap.Tooltip.getInstance(triggerEl)) return; // avoid duplicate
+    //  return new bootstrap.Tooltip(triggerEl)
+    //});
   }
 }
 
@@ -346,7 +360,7 @@ class core {
 (() => document.addEventListener("DOMContentLoaded", () => {
   new toggler();
   new fullscreen();
-  new tooltip();
+  new TooltipManager();
   new simplebar();
   new BackdropKeydown();
   new LeftbarCollapsedTogglerColor();
