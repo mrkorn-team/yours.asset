@@ -48,7 +48,7 @@ namespace YOURS.Asset.Pages.SharedFiles
         FileName = Path.GetFileName(currentFullPath);
         FileExt = Path.GetExtension(currentFullPath).ToLower();
 
-        var imageExts = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+        var imageExts = new[] { ".jpg", ".jpeg", ".png", ".gif", ".tiff" };
         var textExts = new[] { ".txt", ".cs", ".cshtml", ".cshtml.cs", ".json", ".js", ".css", ".md" };
 
         if (imageExts.Contains(FileExt))
